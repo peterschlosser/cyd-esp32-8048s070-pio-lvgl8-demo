@@ -167,7 +167,7 @@ A simplified PlatformIO project to dispel some of the mystery in setting up the 
 		{
 			delay(100);
 		}
-		ESP_LOGI(TAG, "started.");
+		ESP_LOGI(TAG, "setup started.");
 	}```
 
 	13.3 **test Serial.** compile and upload the firmware to our device.  open the PlatformIO Serial Monitor and observe the "started" message.  this is a good place to resolve any USB connection issues with our device, and any compiler or build errors.  on success, our serial monitor may look something like:
@@ -185,7 +185,7 @@ A simplified PlatformIO project to dispel some of the mystery in setting up the 
 		load:0x403cc700,len:0x2a0c
 		entry 0x403c98d0
 		[   105][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
-		[   126][I][main.cpp:12] setup(): [main] started.
+		[   126][I][main.cpp:12] setup(): [main] setup started.
 
 14. setup and test the LovyanGFX driver for our device.  modify the main.cpp file in the following ways:
 
@@ -305,6 +305,7 @@ A simplified PlatformIO project to dispel some of the mystery in setting up the 
 
 	14.4 below the "started." log entry within `setup()`, add the following lines to setup GFX and use of the display:
 	```cpp
+	ESP_LOGI(TAG, "starting LovyanGFX %d.%d.%d display...", LGFX_VERSION_MAJOR, LGFX_VERSION_MINOR, LGFX_VERSION_PATCH);
 	gfx.begin();
 	gfx.initDMA();
 	gfx.setBrightness(128);           // adjust as desired (1-255)
@@ -385,6 +386,7 @@ A simplified PlatformIO project to dispel some of the mystery in setting up the 
 
 	15.5 allocate and initialize the draw buffers used by LvGL.  add the following lines to the bottom of `setup()`:
 	```cpp
+	ESP_LOGI(TAG, "starting LvGL %d.%d.%d gui...", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
 	lv_init();
 	disp_buf[0] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 	disp_buf[1] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);

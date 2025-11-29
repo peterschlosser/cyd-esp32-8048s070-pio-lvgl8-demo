@@ -161,8 +161,9 @@ void setup()
   {
     delay(100);
   }
-  ESP_LOGI(TAG, "started.");
+  ESP_LOGI(TAG, "setup started.");
 
+  ESP_LOGI(TAG, "starting LovyanGFX %d.%d.%d display...", LGFX_VERSION_MAJOR, LGFX_VERSION_MINOR, LGFX_VERSION_PATCH);
   gfx.begin();
   gfx.initDMA();
   gfx.setBrightness(128);           // adjust as desired (1-255)
@@ -172,6 +173,7 @@ void setup()
   gfx.setTextWrap(false);           // optional
   ESP_LOGI(TAG, "display started.");
 
+  ESP_LOGI(TAG, "starting LvGL %d.%d.%d gui...", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
   lv_init();
   disp_buf[0] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
   disp_buf[1] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
