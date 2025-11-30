@@ -112,10 +112,10 @@ public:
 LGFX gfx;
 
 #define _LV_DISP_DRAW_BUF_SIZE (gfx.width() * gfx.height() * sizeof(lv_color_t) / 8)
-lv_disp_drv_t disp_drv;
-lv_indev_drv_t indev_drv;
-lv_disp_draw_buf_t disp_draw_buf;
-lv_color_t *disp_buf[2];
+lv_disp_draw_buf_t lv_display_buffer;
+lv_color_t *lv_buffer[2];
+lv_disp_drv_t lv_display;
+lv_indev_drv_t lv_input;
 
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
@@ -175,28 +175,28 @@ void setup()
 
   ESP_LOGI(TAG, "starting LvGL %d.%d.%d gui...", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
   lv_init();
-  disp_buf[0] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-  disp_buf[1] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-  if (disp_buf[0] == nullptr || disp_buf[1] == nullptr)
+  lv_buffer[0] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  lv_buffer[1] = (lv_color_t *)heap_caps_aligned_alloc(64, _LV_DISP_DRAW_BUF_SIZE, /* MALLOC_CAP_DMA | */ MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if (lv_buffer[0] == nullptr || lv_buffer[1] == nullptr)
   {
     ESP_LOGI(TAG, "buffer allocation failure, aborting.");
     while (1)
       yield();
   }
-  lv_disp_draw_buf_init(&disp_draw_buf, disp_buf[0], disp_buf[1], _LV_DISP_DRAW_BUF_SIZE / /* pixel size */ sizeof(lv_color_t));
+  lv_disp_draw_buf_init(&lv_display_buffer, lv_buffer[0], lv_buffer[1], _LV_DISP_DRAW_BUF_SIZE / /* pixel size */ sizeof(lv_color_t));
 
-  lv_disp_drv_init(&disp_drv);
-  disp_drv.hor_res = gfx.width();
-  disp_drv.ver_res = gfx.height();
-  disp_drv.flush_cb = my_disp_flush;
-  disp_drv.draw_buf = &disp_draw_buf;
-  disp_drv.full_refresh = 0;
-  lv_disp_drv_register(&disp_drv);
+  lv_disp_drv_init(&lv_display);
+  lv_display.hor_res = gfx.width();
+  lv_display.ver_res = gfx.height();
+  lv_display.flush_cb = my_disp_flush;
+  lv_display.draw_buf = &lv_display_buffer;
+  lv_display.full_refresh = 0;
+  lv_disp_drv_register(&lv_display);
 
-  lv_indev_drv_init(&indev_drv);
-  indev_drv.type = LV_INDEV_TYPE_POINTER;
-  indev_drv.read_cb = my_touchpad_read;
-  lv_indev_drv_register(&indev_drv);
+  lv_indev_drv_init(&lv_input);
+  lv_input.type = LV_INDEV_TYPE_POINTER;
+  lv_input.read_cb = my_touchpad_read;
+  lv_indev_drv_register(&lv_input);
 
   lv_demo_widgets();
   ESP_LOGI(TAG, "gui started.");
