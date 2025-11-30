@@ -7,17 +7,17 @@ A simplified PlatformIO project to dispel some of the mystery in setting up the 
 - Step-by-step instructions for PlatformIO + LvGL 8 on larger CYD displays using the ESP32-S3-WROOM-1 MCU Module
 - Easily adapted for use with SquareLine Studio and EEZ Studio projects
 - Implements
--- ESP32-S3 PSRAM Memory
--- DMA memory transfer
--- LvGL Widgets Demo
+	- ESP32-S3 PSRAM Memory
+	- DMA memory transfer
+	- LvGL Widgets Demo
 - Tested with
--- Sunton ESP32-8040S050
--- Sunton ESP32-8040S070
--- Guition ESP32-8040S050
--- Guition ESP32-8040S070
+	- Sunton ESP32-8040S050
+	- Sunton ESP32-8040S070
+	- Guition ESP32-8040S050
+	- Guition ESP32-8040S070
 - Supports
--- LvGL 8.4.0
--- LovyanGFX 1.2.7
+	- LvGL 8.4.0
+	- LovyanGFX 1.2.7
 
 ## Setup Procedure
 
